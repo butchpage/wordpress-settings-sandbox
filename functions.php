@@ -88,5 +88,112 @@ function sandbox_initialize_theme_options() {
  	echo $html;
  }
 
+/**
+ * Create Menu
+ */
+function sandbox_create_menu_page(){
+
+	add_menu_page(
+			'Sandbox Options', 					// The title to be displayed on the corrisponding page fro this menu.
+			'Sandbox', 				 					// The text to be displayed for this actual menu item.
+			'administrator',   					// Which type of user can see this menu.
+			'sandbox',				 					//	The unique ID - that is the slug - for this menu item.
+			'sandbox_menu_page_display', // The name of the function to call when rendering the menu for this page.
+			''
+		);
+
+	add_submenu_page(
+			'sandbox', 								// Register this submenu with the menu defined above.
+			'Sandbox Options', 				// The text to display in the browser when this menu is active.
+			'Options', 								// The text for this menu name.
+			'administrator', 					// Which type of user can see this menu item.
+			'sandbox_options',        // The unique ID - the slug - for this menu item.
+			'sandbox_options_display' // The function used to render the menu for this page to the screen.
+		);
+
+} // end sandbox_create_menu_page
+add_action( 'admin_menu', 'sandbox_create_menu_page' );
+
+function sandbox_menu_page_display() {
+	// Create a header in the default WordPress 'wrap' container
+	$html = '<div class="wrap">';
+		$html .= '<h2>Sandbox</h2>';
+	$html .= '</div>';
+
+	// Send the markup to the browser
+	echo $html;
+
+} // end sandbox_menu_page_display
+
+function sandbox_options_display(){
+	// Create a header in the default WordPress 'wrap' container
+	$html = '<div class="wrap">';
+		$html .= '<h2>Sandbox Options</h2>';
+	$html .= '</div>';
+
+	// Send the markup to the browser.
+	echo $html;
+} // end sandbox_options_display
+
+
+
+
+
+// these are optional examples to add option pages to plugins and theme menu pages.
+
+/**
+ * Plugin menu example
+ */
+function sandbox_example_plugin_menu() {
+	add_plugins_page(
+		'Sandbox Plugin', // The title to be displayed in the browser window for this page.
+		'Sandbox Plugin', // The text to be displayed for this menu item.
+		'administrator',  // Which type of users can see this menu item.
+		'sandbox_plugin_options', // The unique ID - the slug - for this menu item.
+		'sandbox_plugin_display' // The name of the function to call when rendering the page for this menu.
+	);
+
+} // end sandbox_example_plugin_menu
+add_action( 'admin_menu', 'sandbox_example_plugin_menu' );
+
+function sandbox_plugin_display() {
+	// Create the header in the default WordPress 'wrap' container
+	$html = '<div class="wrap">';
+		$html .= '<h2>Sandbox Pluing Options</h2>';
+	$html .= '<p class="description">There are currently no options. This is just for demo purposes.</p>';
+	$html .= '</div>';
+
+	// Send the markup to the browser
+	echo $html;
+} // end sandbox_plugin_display
+
+/**
+ * Theme menu example
+ */
+function sandbox_example_theme_menu() {
+
+	add_theme_page(
+		'Sandbox Theme',         // The title to be displayed in the browser window for this page.
+		'Sandbox Theme',  			 // The text to be displayed for this menu item.
+		'administrator', 				 // Which type of users can see this menu item.
+		'sandbox_theme_options', // The unique ID - the slug - for this menu item.
+		'sandbox_theme_display'  // The name of the function to call when rendering the page for this menu.
+	);
+} // end sandbox_example_theme_menu
+add_action( 'admin_menu', 'sandbox_example_theme_menu' );
+
+/**
+ * Renders a simple page to display for the theme menu defined above.
+ */
+function sandbox_theme_display() {
+	// Create a header in the default WordPress 'wrap' container.
+	$html = '<div class="wrap">';
+		$html .= '<h2>Sandbox Theme Options</h2>';
+		$html .= '<p class="description">There are currently no options. This is just for demo.</p>';
+	$html .= '</div>';
+
+	// Send the markup to the browser.
+	echo $html;
+}// end sandbox_theme_display.
 
 ?>
