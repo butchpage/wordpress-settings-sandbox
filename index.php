@@ -12,6 +12,9 @@
 
 		<?php if( get_option( 'show_content' ) ) { ?>
 			<div id="content">
+        <?php echo $social_options['twitter'] ? '<a href="' . $social_options['twitter'] . '">Twitter</a>' : ''; ?>
+				<?php echo $social_options['facebook'] ? '<a href="' . $social_options['facebook'] . '">Facebook</a>' : ''; ?>
+				<?php echo $social_options['googleplus'] ? '<a href="' . $social_options['googleplus'] . '">Google+</a>' : ''; ?>
 				<p>This is the content.</p>
 			</div><!-- end content -->
 		<?php } // end if ?>
