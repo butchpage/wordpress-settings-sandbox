@@ -29,18 +29,33 @@ function sandbox_theme_display() {
 			<!-- make a call to the WordPress function for rendering errors when settings are saved. -->
 			<?php settings_errors(); ?>
 
+			<?php
+
+				$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'display_options';
+
+			?>
+
+			<h2 class="nav-tab-wrapper">
+				<a href="?page=sandbox_theme_options&tab=display_options" class="nav-tab <?php echo $active_tab == 'display_options' ? 'nav-tab-active' : ''; ?> ">Display Options</a>
+				<a href="?page=sandbox_theme_options&tab=social_options" class="nav-tab <?php echo $active_tab == 'social_options' ? 'nav-tab-active' : ''; ?>">Social Options</a>
+			</h2>
+
 			<!-- Create the form that will be used to render our options. -->
 			<form method="post" action="options.php">
+    <?php
 
-				<!-- Theme Display Options -->
-				<?php settings_fields( 'sandbox_theme_display_options' ); ?>
-				<?php do_settings_sections( 'sandbox_theme_display_options' ); ?>
+        if( $active_tab == 'display_options' ) {
+            settings_fields( 'sandbox_theme_display_options' );
+            do_settings_sections( 'sandbox_theme_display_options' );
+        } else {
+            settings_fields( 'sandbox_theme_social_options' );
+            do_settings_sections( 'sandbox_theme_social_options' );
+        } // end if/else
 
-				<!-- Social Display Options -->
-				<?php settings_fields( 'sandbox_theme_social_options' ); ?>
-				<?php do_settings_sections( 'sandbox_theme_social_options' ); ?>
-				<?php submit_button(); ?>
-			</form>
+        submit_button();
+
+    ?>
+</form>
 		</div><!-- end .wrap -->
 
 	<?php
