@@ -11,13 +11,40 @@ function sandbox_example_theme_menu() {
 		'sandbox_theme_options', // The unique ID - the slug - for this menu item.
 		'sandbox_theme_display'  // The name of the function to call when rendering the page for this menu.
 	);
+
+	add_menu_page(
+		'Sandbox Theme', 				// The title to be displayed in the browser window for this page
+		'Sandbox Theme', 				// The text to be displayed for this menu item
+		'administrator', 				// Which type of users can see this menu
+		'sandbox_theme_menu', 	// The unique ID - the slug - for this menu item
+		'sandbox_theme_display' // The name of the function to call when rendering this menu's page
+	);
+
+	add_submenu_page(
+		'sandbox_theme_menu',  					 // The ID of the top-level menu page to which this submenu item belongs
+		'Display Options',    					 // The value used to populate the browsers title bar when the menu page is active
+		'Display Options', 							 // The label of this submenu item displayed in the menu
+		'administrator', 								 // What roles are able to see this submenu item
+		'sandbox_theme_display_options', // The ID used to represent this submenu item
+		'sandbox_theme_display' 				 // The callback function used to render the options for this submenu item
+	);
+
+	add_submenu_page(
+		'sandbox_theme_menu',
+		'Social Options',
+		'Social Options',
+		'administrator',
+		'sandbox_theme_social_options',
+		create_function( null, 'sandbox_theme_display( "social_options" );' )
+	);
+
 } // end sandbox_example_theme_menu
 add_action( 'admin_menu', 'sandbox_example_theme_menu' );
 
 /**
  * Renders a simple page to display for the theme menu defined above.
  */
-function sandbox_theme_display() {
+function sandbox_theme_display( $active_tab = null ) {
 	?>
 		<!-- Create a header in the default WordPress 'wrap' container -->
 		<div class="wrap">
@@ -31,7 +58,13 @@ function sandbox_theme_display() {
 
 			<?php
 
-				$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'display_options';
+				if( isset( $_GET[ 'tab' ] ) ) {
+					$active_tab = $_GET[ 'tab' ];
+				} else if( $active_tab == 'social_options' ) {
+					$acitve_tab = 'social_options';
+				} else {
+					$active_tab = 'display_options';
+				} // end if/else
 
 			?>
 
