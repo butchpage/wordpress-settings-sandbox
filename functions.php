@@ -38,6 +38,15 @@ function sandbox_example_theme_menu() {
 		create_function( null, 'sandbox_theme_display( "social_options" );' )
 	);
 
+	add_submenu_page(
+		'sandbox_theme_menu',
+		'Input Examples',
+		'Input Examples',
+		'administrator',
+		'sandbox_theme_input_examples',
+		create_function( null, 'sandbox_theme_display( "input_examples" ); ' )
+	);
+
 } // end sandbox_example_theme_menu
 add_action( 'admin_menu', 'sandbox_example_theme_menu' );
 
@@ -62,6 +71,8 @@ function sandbox_theme_display( $active_tab = null ) {
 					$active_tab = $_GET[ 'tab' ];
 				} else if( $active_tab == 'social_options' ) {
 					$acitve_tab = 'social_options';
+				} else if( $active_tab == 'input_examples' ) {
+					$active_tab == 'input_examples';
 				} else {
 					$active_tab = 'display_options';
 				} // end if/else
@@ -71,6 +82,7 @@ function sandbox_theme_display( $active_tab = null ) {
 			<h2 class="nav-tab-wrapper">
 				<a href="?page=sandbox_theme_options&tab=display_options" class="nav-tab <?php echo $active_tab == 'display_options' ? 'nav-tab-active' : ''; ?> ">Display Options</a>
 				<a href="?page=sandbox_theme_options&tab=social_options" class="nav-tab <?php echo $active_tab == 'social_options' ? 'nav-tab-active' : ''; ?>">Social Options</a>
+				<a href="?page=sandbox_theme_options&tab=input_examples" class="nav-tab <?php echo $active_tab == 'input_examples' ? 'nav-tab-active' : ''; ?>">Input Examples</a>
 			</h2>
 
 			<!-- Create the form that will be used to render our options. -->
@@ -80,9 +92,12 @@ function sandbox_theme_display( $active_tab = null ) {
         if( $active_tab == 'display_options' ) {
             settings_fields( 'sandbox_theme_display_options' );
             do_settings_sections( 'sandbox_theme_display_options' );
-        } else {
+        } elseif( $active_tab == 'social_options' ) {
             settings_fields( 'sandbox_theme_social_options' );
             do_settings_sections( 'sandbox_theme_social_options' );
+        } else {
+        	settings_fields( 'sandbox_theme_input_examples' );
+        	do_settings_sections( 'sandbox_theme_input_examples' );
         } // end if/else
 
         submit_button();
@@ -336,5 +351,106 @@ function sandbox_theme_sanitize_social_options( $input ) {
 
 } // end sandbox_theme_sanitize_social_options
 
+
+/* ------------------------------------------------------------------------ *
+ * Input Examples Section
+ * ------------------------------------------------------------------------ *
+ */
+
+/*
+ * Initializes the input examples by registering the Sections,
+ * Fields, and Settings.
+ *
+ * This function is registered with the 'admin_init' hook.
+ *
+ */
+function sandbox_theme_initialize_input_examples() {
+	if( false == get_option( 'sandbox_theme_input_examples' ) ) {
+		add_option( 'sandbox_theme_input_examples' );
+	} // end if
+
+	add_settings_section(
+		'input_examples_section',
+		'Input Examples',
+		'sandbox_input_examples_callback',
+		'sandbox_theme_input_examples'
+	);
+
+	add_settings_field(
+		'Input Element',
+		'Input Element',
+		'sandbox_input_element_callback',
+		'sandbox_theme_input_examples',
+		'input_examples_section'
+	);
+
+	add_settings_field(
+		'Textarea Element',
+		'Textarea Element',
+		'sandbox_textarea_element_callback',
+		'sandbox_theme_input_examples',
+		'input_examples_section'
+	);
+
+	register_setting(
+		'sandbox_theme_input_examples',
+		'sandbox_theme_input_examples',
+		'sandbox_theme_validate_input_examples'
+ );
+
+} // end sandbox_theme_initialize_input_examples
+add_action( 'admin_init', 'sandbox_theme_initialize_input_examples' );
+
+function sandbox_input_examples_callback() {
+	echo '<p>Provides examples of the five basic element types.</p>';
+} // end sandbox_input_examples_callback()
+
+function sandbox_input_element_callback() {
+
+	$options = get_option( 'sandbox_theme_input_examples' );
+
+	// render the output
+	echo '<input type="text" id="input_example" name="sandbox_theme_input_examples[input_example]" value="' . $options[ 'input_example' ] . ' " /> ';
+} // end sandbox_input_element_callback
+
+function sandbox_textarea_element_callback() {
+
+    $options = get_option( 'sandbox_theme_input_examples' );
+
+    // Render the output
+    echo '<textarea id="textarea_example" name="sandbox_theme_input_examples[textarea_example]" rows="5" cols="50">' . $options[ 'textarea_example' ] . '</textarea>';
+
+} // end sandbox_textarea_element_callback
+
+function sandbox_theme_validate_input_examples( $input ) {
+
+
+	 /*
+	  * Creating a validation function typically follows three steps.
+	 	* 1. Create an array that will be used to store the validated options.
+	  * 2. Validate (and clean, when necessary) all incoming options.
+	  * 3. Return the array that we created earlier.
+	  */
+
+	// 1. Create our array for storing the validated options
+	$output = array();
+
+	// 2. Loop through each of the incoming options
+	foreach ($input as $key => $value) {
+
+		 // check to see if the current option has a value. if so process it.
+		if( isset( $input[$key] ) ) {
+
+			// strip out all HTML and PHP tags and properly handle quoted strings
+			$output[$key] = strip_tags( stripcslashes( $input[ $key ] ) );
+
+		} // end if
+
+	} // end foreach
+
+	// 3. Return the array processing any additional functions filtered by this action
+	return apply_filters(	'sandbox_theme_validate_input_examples', $output, $input );
+
+}// end sandbox_theme_validate_input_examples
 
 ?>

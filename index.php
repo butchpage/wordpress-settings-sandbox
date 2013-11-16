@@ -7,6 +7,12 @@
 		<?php if( get_option( 'show_header' ) ) { ?>
 			<div id="header">
 				<h1>Sandbox Header</h1>
+				<?php $input_examples = get_option( 'sandbox_theme_input_examples' ); ?>
+				<?php echo sanitize_text_field( $input_examples[ 'input_example' ] ); ?>
+
+				<?php if( $input_examples[ 'textarea_example' ] ) {
+					echo sanitize_text_field( $input_examples[ 'textarea_example' ] );
+				} ?>
 			</div> <!-- end header -->
 		<?php } // end if ?>
 
