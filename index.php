@@ -13,6 +13,40 @@
 				<?php if( $input_examples[ 'textarea_example' ] ) {
 					echo sanitize_text_field( $input_examples[ 'textarea_example' ] );
 				} ?>
+
+				<?php
+
+					if( $input_examples[ 'checkbox_example' ] == '1' ) {
+						echo '<p>The checkbox has been checked.</p>';
+					} else {
+						echo '<p>The checkbox has not been checked.</p>';
+					} // end if
+
+				 ?>
+
+				 <?php
+
+				 	if( $input_examples['radio_example'] == 1 ) {
+				 		echo '<p>The first option was selected</p>';
+				 	} else {
+				 		echo '<p>The second option was selected</p>';
+				 	} // end if
+
+				  ?>
+
+					<?php
+
+						if( $input_examples[ 'time_options' ] == 'never' ) {
+							echo '<p>Never display this. Somewhat ironic to show this.</p>';
+						} elseif( $input_examples[ 'time_options' ] == 'sometimes' ) {
+							echo '<p>Sometimes display this.</p>';
+						} elseif( $input_examples[ 'time_options' ] == 'always' ) {
+							echo '<p>Allways display this.</p>';
+						}
+
+					 ?>
+
+
 			</div> <!-- end header -->
 		<?php } // end if ?>
 

@@ -392,6 +392,30 @@ function sandbox_theme_initialize_input_examples() {
 		'input_examples_section'
 	);
 
+	add_settings_field(
+		'Checkbox Element',
+		'Checkbox Element',
+		'sandbox_checkbox_element_callback',
+		'sandbox_theme_input_examples',
+		'input_examples_section'
+	);
+
+	add_settings_field(
+		'Radio Element',
+		'Radio Element',
+		'sandbox_radio_element_callback',
+		'sandbox_theme_input_examples',
+		'input_examples_section'
+	);
+
+	add_settings_field(
+		'Select Element',
+		'Select Element',
+		'sandbox_select_element_callback',
+		'sandbox_theme_input_examples',
+		'input_examples_section'
+	);
+
 	register_setting(
 		'sandbox_theme_input_examples',
 		'sandbox_theme_input_examples',
@@ -400,6 +424,10 @@ function sandbox_theme_initialize_input_examples() {
 
 } // end sandbox_theme_initialize_input_examples
 add_action( 'admin_init', 'sandbox_theme_initialize_input_examples' );
+
+/**
+ * settings callbacks
+ */
 
 function sandbox_input_examples_callback() {
 	echo '<p>Provides examples of the five basic element types.</p>';
@@ -421,6 +449,50 @@ function sandbox_textarea_element_callback() {
     echo '<textarea id="textarea_example" name="sandbox_theme_input_examples[textarea_example]" rows="5" cols="50">' . $options[ 'textarea_example' ] . '</textarea>';
 
 } // end sandbox_textarea_element_callback
+
+function sandbox_checkbox_element_callback() {
+
+	$options = get_option( 'sandbox_theme_input_examples' );
+
+	$html = '<input type="checkbox" id="checkbox_example" name="sandbox_theme_input_examples[checkbox_example]" value="1"' . checked( 1, $options['checkbox_example'], false ) . '/>';
+	$html .= '<label for="checkbox_example">This is an example of a checkbox</label>';
+
+	echo $html;
+
+} // end sandbox_checkbox_element_callback
+
+function sandbox_radio_element_callback() {
+
+	$options = get_option( 'sandbox_theme_input_examples' );
+
+	$html = '<input type="radio" id="radio_example_one" name="sandbox_theme_input_examples[radio_example]" value="1"' . checked( 1, $options[ 'radio_example' ], false ) .'/>';
+	$html .= '<label for="radio_example_one">Option One</label>';
+
+	$html .= '<input type="radio" id="radio_example_two" name="sandbox_theme_input_examples[radio_example]" value="2"' . checked( 2, $options[ 'radio_example' ], false ) . '/>';
+	$html .= '<label for="radio_example_two">Option Two</label>';
+
+	echo $html;
+
+} // end sandbox_radio_element_callback
+
+function sandbox_select_element_callback() {
+
+	$options = get_option( 'sandbox_theme_input_examples' );
+
+	$html = '<select id="time_options" name="sandbox_theme_input_examples[time_options]">';
+		$html .= '<option value="default">Select a time option...</option>';
+		$html .= '<option value="never"' . selected( $options['time_options'], 'never', false ) . '>Never</option>';
+		$html .= '<option value="sometimes"' . selected( $options['time_options'], 'sometimes', false ) . '>Sometimes</option>';
+		$html .= '<option value="always"' . selected( $options['time_options'], 'always', false ) . '>Always</option>';
+	$html .= '</select>';
+
+	echo $html;
+
+} // end sandbox_select_element_callback
+
+/**
+ * validate and sanitize
+ */
 
 function sandbox_theme_validate_input_examples( $input ) {
 
